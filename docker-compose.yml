@@ -1,0 +1,61 @@
+version: '3'
+
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+    environment:
+      - JENKINS_OPTS=--prefix=/jenkins
+    networks:
+      - jenkins-sonarqube
+
+  sonarqube:
+    image: sonarqube:lts-community
+    container_name: sonarqube
+    ports:
+      - "9000:9000"
+    environment:
+      - SONARQUBE_JDBC_URL=jdbc:mysql://mysql:3306/enade
+      - SONARQUBE_JDBC_USERNAME=enade
+      - SONARQUBE_JDBC_PASSWORD=enade
+    depends_on:
+      - mysql
+    volumes:
+      - sonarqube_conf:/opt/sonarqube/conf
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_logs:/opt/sonarqube/logs
+      - sonarqube_extensions:/opt/sonarqube/extensions
+    networks:
+      - jenkins-sonarqube
+
+  mysql:
+    image: mysql:8.0.25
+    container_name: sonarqube_mysql
+    ports:
+      - "3307:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=enade
+      - MYSQL_DATABASE=enade
+      - MYSQL_USER=enade
+      - MYSQL_PASSWORD=enade
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - jenkins-sonarqube
+
+networks:
+  jenkins-sonarqube:
+    driver: bridge
+
+volumes:
+  jenkins_home:
+  sonarqube_conf:
+  sonarqube_data:
+  sonarqube_logs:
+  sonarqube_extensions:
+  mysql_data:
