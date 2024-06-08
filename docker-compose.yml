@@ -48,6 +48,17 @@ services:
     networks:
       - jenkins-sonarqube
 
+  ngrok:
+    image: ngrok/ngrok
+    ports: 
+      - "4040:4040"
+      - "80:80"
+    environment: 
+      NGROK_AUTHTOKEN: 2hZidxAz0LhsK3faVqvcrH9E3wT_ysLpzr2bUwHcfRJNWqLK
+    command: http http://localhost:8080
+    networks:
+      - jenkins-sonarqube
+
 networks:
   jenkins-sonarqube:
     driver: bridge
