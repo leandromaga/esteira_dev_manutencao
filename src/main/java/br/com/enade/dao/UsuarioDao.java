@@ -11,7 +11,7 @@ import javax.persistence.TypedQuery;
 import br.com.enade.model.Tbtipousuario;
 import br.com.enade.model.Tbusuario;
 
-public class SUsuarioDao implements Serializable {
+public class UsuarioDao implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
