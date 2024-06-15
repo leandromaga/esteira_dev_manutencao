@@ -1,7 +1,7 @@
 FROM tomcat:9.0.53-jdk8-openjdk-slim-buster
 
 EXPOSE 8081
-ENV MAVEN_VERSION=3.8.8
+ENV MAVEN_VERSION=3.8.1
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends curl && \
