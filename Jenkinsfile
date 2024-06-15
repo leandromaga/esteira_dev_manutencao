@@ -42,8 +42,12 @@ pipeline {
     stage('Deploy to Tomcat') {
             steps {
                 script {
+                    // Encontra o arquivo .war gerado no diretório target
                     def warFile = findFiles(glob: '**/target/*.war')[0]
-                    sh "docker cp ${warFile.path} $(docker-compose ps -q tomcat):/usr/local/tomcat/webapps/enade.war"
+                    // Escapa o símbolo de dólar para uso correto dentro do comando sh
+                    def warPath = warFile.path.replace('$', '\$')
+                    // Copia o arquivo .war para o container Tomcat
+                    sh "docker cp ${warPath} \$(docker-compose ps -q tomcat):/usr/local/tomcat/webapps/enade.war"
                 }
             }
         }
