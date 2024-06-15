@@ -38,5 +38,20 @@ pipeline {
             sh 'mvn clean package'
         }
     }
-}
+
+    stage('Deploy to Tomcat') {
+            steps {
+                script {
+                    def warFile = findFiles(glob: '**/target/*.war')[0]
+                    sh "docker cp ${warFile.path} $(docker-compose ps -q tomcat):/usr/local/tomcat/webapps/enade.war"
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
+        }
+    }
 }

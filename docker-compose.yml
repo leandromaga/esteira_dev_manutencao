@@ -45,3 +45,12 @@ services:
       - "8080:8080"
     networks:
       - gs-network
+
+  tomcat:
+      image: tomcat:9.0
+      ports:
+        - "8081:8080"  
+      volumes:
+        - ./target/enade.war:/usr/local/tomcat/webapps/enade.war
+      networks:
+        - gs-network
